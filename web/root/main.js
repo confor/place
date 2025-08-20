@@ -23,6 +23,20 @@ const GUI = (cvs, glWindow, place) => {
 	const colorSwatch = document.querySelector("#color-swatch");
 
 	// ***************************************************
+	// Color picker
+	//
+	const colorPicker = document.querySelector('#color-picker');
+	const colorButtons = colorPicker.querySelectorAll('.button');
+	for (let i = 0; i < colorButtons.length; i++) {
+		let button = colorButtons[i];
+		let color = button.dataset.color;
+
+		button.addEventListener('click', ev => {
+			useColorPicker(color);
+		});
+	}
+
+	// ***************************************************
 	// ***************************************************
 	// Event Listeners
 	//
@@ -207,5 +221,15 @@ const GUI = (cvs, glWindow, place) => {
 		let zoom = glWindow.getZoom();
 		glWindow.setZoom(zoom / factor);
 		glWindow.draw();
+	}
+
+	const useColorPicker = (hex) => {
+		hex = hex.substring(1);
+		color[0] = parseInt(hex.substring(0, 2), 16);
+		color[1] = parseInt(hex.substring(2, 4), 16);
+		color[2] = parseInt(hex.substring(4, 6), 16);
+		hex = '#' + hex;
+		colorField.value = hex;
+		colorSwatch.style.backgroundColor = hex;
 	}
 }

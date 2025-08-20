@@ -14,19 +14,41 @@
 	<canvas id="viewport-canvas" oncontextmenu="return false;"></canvas>
 	<div id="ui-wrapper">
 		<p id="loading-p"></p>
-		<div id="color-wrapper">
-			<div id="color-swatch"></div>
-			<input id="color-field" type="text" placeholder="#000000" value="#000000" />
+	</div>
+
+	<div id="controls">
+		<!-- top row: color palletes -->
+		<div id="color-picker" class="flex flex-gap">
+			<div class="flex">
+				<div class="button" data-color="#FF1717" style="background-color: #ff1717;"></div>
+				<div class="button" data-color="#FF9000" style="background-color: #ff9000;"></div>
+				<div class="button" data-color="#FFD500" style="background-color: #ffd500;"></div>
+				<div class="button" data-color="#00E676" style="background-color: #00e676;"></div>
+				<div class="button" data-color="#00B0FF" style="background-color: #00b0ff;"></div>
+			</div>
+
+			<div class="flex">
+				<div class="button" data-color="#000000" style="background-color: #000000;"></div>
+				<div class="button" data-color="#666666" style="background-color: #666666;"></div>
+				<div class="button" data-color="#ABABAB" style="background-color: #ababab;"></div>
+				<div class="button" data-color="#FFFFFF" style="background-color: #ffffff;"></div>
+			</div>
 		</div>
-		<div id="zoom-wrapper">
-			<button class="zoom-button" id="zoom-out">
-				-
-			</button>
-			<button class="zoom-button" id="zoom-in">
-				+
-			</button>
+
+		<!-- bottom row: custom hex input with zoom controls -->
+		<div class="flex flex-gap">
+			<div class="flex">
+				<div id="color-swatch" class="button"></div>
+				<input id="color-field" type="text" placeholder="#000000" value="#000000" />
+			</div>
+
+			<div class="flex-spacer"></div>
+
+			<div id="zoom-out" class="button center">-</div>
+			<div id="zoom-in" class="button center">+</div>
 		</div>
 	</div>
+
 	<button id="help-button" onclick="document.querySelector('#help-popup').style.visibility = 'visible';">
 		<p><strong>Help</strong></p>
 	</button>
