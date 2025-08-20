@@ -126,7 +126,7 @@ const GUI = (cvs, glWindow, place) => {
 				pickColor(lastMovePos);
 				navigator.vibrate(200);
 			}
-		}, 350);
+		}, 800);
 	});
 
 	document.addEventListener("touchend", (ev) => {
