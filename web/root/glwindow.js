@@ -29,8 +29,20 @@ const viewportFragmentShaderSource = `
 	precision mediump float;
 	uniform sampler2D tex;
 	varying vec2 uv;
+	uniform bool drawGrid;
+	uniform float zoom;
+	uniform vec2 tex_scale;
+
 	void main() {
-		gl_FragColor = texture2D(tex, uv);
+		vec4 color = texture2D(tex, uv);
+		if (drawGrid) {
+			vec2 grid = fract(uv * tex_scale);
+			float thickness = 1.0 / zoom * 0.8;
+			if (grid.x < thickness || grid.y < thickness) {
+				color.rgb = mix(color.rgb, vec3(0.0), 0.1);
+			}
+		}
+		gl_FragColor = color;
 	}
 `;
 
@@ -43,12 +55,14 @@ class GLWindow {
 	#texScale;
 	#camPos;
 	#zoom;
+	#drawGrid;
 
 	#u_cam;
 	#u_zoom;
 	#u_tex;
 	#u_view;
 	#a_vert;
+	#u_drawGrid;
 
 	constructor(cvs) {
 		this.#cvs = cvs;
@@ -61,6 +75,7 @@ class GLWindow {
 		this.#texScale = { x: 0, y: 0 };
 		this.#camPos = { x: 0, y: 0 };
 		this.#zoom = 1;
+		this.#drawGrid = false;
 
 		const vertexShader = this.#compileShader(this.#gl.VERTEX_SHADER, viewportVertexShaderSource);
 		const fragmentShader = this.#compileShader(this.#gl.FRAGMENT_SHADER, viewportFragmentShaderSource);
@@ -79,6 +94,7 @@ class GLWindow {
 	draw() {
 		this.#gl.bindFramebuffer(this.#gl.FRAMEBUFFER, null);
 		this.#gl.clear(this.#gl.COLOR_BUFFER_BIT);
+		this.#gl.uniform1i(this.#u_drawGrid, this.#drawGrid);
 		this.#gl.drawArrays(this.#gl.TRIANGLES, 0, 6);
 	}
 
@@ -135,6 +151,8 @@ class GLWindow {
 		if (z > 40) z = 40;
 		this.#zoom = z;
 		this.#gl.uniform1f(this.#u_zoom, z);
+
+		this.#drawGrid = z > 20;
 	}
 
 	getZoom() {
@@ -228,5 +246,6 @@ class GLWindow {
 		this.#u_tex = this.#gl.getUniformLocation(this.#program, 'tex_scale');
 		this.#u_view = this.#gl.getUniformLocation(this.#program, 'view_scale');
 		this.#u_zoom = this.#gl.getUniformLocation(this.#program, 'zoom');
+		this.#u_drawGrid = this.#gl.getUniformLocation(this.#program, 'drawGrid');
 	}
 }
