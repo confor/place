@@ -13,6 +13,7 @@ class Place {
 		this.#uiwrapper = document.querySelector("#ui-wrapper");
 		this.#glWindow = glWindow;
 		this.#allowDraw = null;
+		this.webroot = '';
 	}
 
 	initConnection() {
@@ -31,10 +32,10 @@ class Place {
 			wsProt = "ws:";
 		}
 
-		this.#connect(wsProt + "//" + host + "/ws");
+		this.#connect(wsProt + "//" + host + this.webroot + "/ws");
 		this.#loadingp.innerHTML = "downloading canvas";
 
-		fetch(window.location.protocol + "//" + host + "/place.png")
+		fetch(window.location.protocol + "//" + host + this.webroot + "/place.png")
 			.then(async resp => {
 				if (!resp.ok) {
 					console.error("Error downloading canvas.");

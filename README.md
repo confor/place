@@ -2,29 +2,31 @@
 
 This project was inspired by r/Place. It is an online shared canvas where you can draw individual pixels.
 
-The project is online at [pl.g7kk.com](https://pl.g7kk.com).
-
 ## How to host a Place
 
-1. You need to compile [place.go](https://github.com/rbxb/place/tree/master/cmd/place) using the [Go compiler](https://go.dev/).  
-    Run `go build`:
+1. You need to compile [place.go](https://github.com/rbxb/place/tree/master/cmd/place) using the [Go compiler](https://go.dev/).
+    A `Makefile` is provided:
+    ```shell
+    make
+    ```
+
+    Alternatively, run `go build` or `go install` manually:
 
     ```shell
     cd ./place
     go build cmd/place/place.go
     ```
-    alternatively, use `go install`:
-    ```shell
-    cd ./place
-    go install cmd/place/place.go
-    ```
-    
 
 2. Run place and set the **-root** argument to the location of the [web/root](https://github.com/rbxb/place/tree/master/web/root) directory. You can also configure other settings when you run it (see below).
 
     ```shell
     place -root web/root -port :8080
     ```
+
+3. If running behind a reverse proxy on a custom path (i.e. not at root), you need to point the frontend to the new path:
+
+    - `desktop.html` line 10: `<link href="/example/route/here/place.png">`
+    - `place.js` line 16: `this.webroot = '/example/route/here';`
 
 ### Other configuration options:
   
